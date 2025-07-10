@@ -29,8 +29,6 @@ export class ProdutoController {
     return this.produtoService.findById(id);
   }
 
-
-
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() produto: Produto): Promise<Produto> {
