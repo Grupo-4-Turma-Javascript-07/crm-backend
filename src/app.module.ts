@@ -1,20 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Usuario } from './Usuario/entities/usuario.entity';
+import { UsuarioModule } from './Usuario/usuario.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as any,
+      type: 'mysql',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
+      username: 'root',
+      password: 'n6mr4tcngw',
       database: process.env.DB_NAME,
-      entities: [],
+      entities: [Usuario],
       synchronize: true,
     }),
+    UsuarioModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}
