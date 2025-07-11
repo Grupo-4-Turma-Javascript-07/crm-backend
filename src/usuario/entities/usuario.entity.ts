@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
@@ -13,6 +14,7 @@ import { Produto } from '../../produto/entities/produto.entity';
 @Entity({ name: 'tb_usuario' })
 export class Usuario {
   @PrimaryGeneratedColumn()
+  @ApiProperty()
   id: number;
 
   @IsNotEmpty({ message: 'Nome é obrigatório' })
@@ -24,16 +26,19 @@ export class Usuario {
   @MinLength(2, { message: 'Nome deve ter pelo menos 2 caracteres' })
   @MaxLength(255, { message: 'Nome excede o limite permitido' })
   @Column({ length: 255, nullable: false })
+  @ApiProperty()
   nome: string;
 
   @IsNotEmpty({ message: 'Email é obrigatório' })
   @IsEmail({}, { message: 'Email inválido' })
   @Column({ length: 255, nullable: false, unique: true })
+  @ApiProperty({ example: 'email@email.com.br' })
   email: string;
 
   @IsOptional()
   @MaxLength(255, { message: 'O link da foto excede o tamanho permitido' })
   @Column({ length: 255, nullable: true })
+  @ApiProperty()
   foto?: string;
 
   @IsNotEmpty({ message: 'Senha é obrigatória' })
@@ -53,9 +58,11 @@ export class Usuario {
     message: 'Senha deve conter pelo menos um caractere especial (@$!%*?&)',
   })
   @Column({ length: 255, nullable: false })
+  @ApiProperty()
   senha: string;
 
   @Column({ default: true })
+  @ApiProperty()
   ativo: boolean;
 
   @OneToMany(() => Produto, (produto) => produto.usuario)
