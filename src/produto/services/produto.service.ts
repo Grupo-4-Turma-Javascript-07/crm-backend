@@ -1,8 +1,9 @@
-import { CategoriaService } from '../../categoria/services/categoria.service';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Produto } from '../entities/produto.entity';
 import { DeleteResult, Repository } from 'typeorm';
+import { Categoria } from '../../categoria/entities/categoria.entity';
+import { CategoriaService } from '../../categoria/services/categoria.service';
+import { Produto } from '../entities/produto.entity';
 
 @Injectable()
 export class ProdutoService {
@@ -10,7 +11,10 @@ export class ProdutoService {
     @InjectRepository(Produto)
     private produtoRepository: Repository<Produto>,
     private CategoriaService: CategoriaService,
-  ) {}
+
+    @InjectRepository(Categoria)
+    private readonly categoriaRepository: Repository<Categoria>,
+  ) { }
 
   async findAll(): Promise<Produto[]> {
     return await this.produtoRepository.find({
@@ -31,7 +35,7 @@ export class ProdutoService {
     });
 
     if (!produto)
-      throw new HttpException('Produto não encontrado!', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('Produto não encontrado!');
 
     return produto;
   }
@@ -48,7 +52,31 @@ export class ProdutoService {
   }
 
   async create(produto: Produto): Promise<Produto> {
-    await this.CategoriaService.findById(produto.categoria.id);
+    if (!produto.categoria || !produto.categoria.id) {
+      throw new BadRequestException('Categoria obrigatória.');
+    }
+
+    const categoria = await this.categoriaRepository.findOne({
+      where: { id: produto.categoria.id },
+    });
+
+    if (!categoria) {
+      throw new NotFoundException('Categoria não encontrada.');
+    }
+
+    if (produto.id) {
+      throw new BadRequestException('O ID não pode ser definido manualmente.');
+    }
+
+    const produtoExistente = await this.produtoRepository.findOne({
+      where: {
+        nome: produto.nome,
+      },
+    });
+
+    if (produtoExistente) {
+      throw new ConflictException('Produto já existe!');
+    }
 
     return await this.produtoRepository.save(produto);
   }
