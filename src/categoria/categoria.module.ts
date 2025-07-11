@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CategoriaController } from './controllers/categoria.controller';
-import { Categoria } from './entities/categoria.entity';
+import { Categoria } from '../categoria/entities/categoria.entity';
+import { CategoriaController } from '../categoria/controllers/categoria.controller';
 import { CategoriaService } from './services/categoria.service';
 
 @Module({
@@ -10,4 +10,4 @@ import { CategoriaService } from './services/categoria.service';
   controllers: [CategoriaController],
   exports: [CategoriaService],
 })
-export class CategoriaModule { }
+export class CategoriaModule {}

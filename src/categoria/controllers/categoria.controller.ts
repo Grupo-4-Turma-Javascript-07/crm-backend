@@ -8,13 +8,16 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { Categoria } from '../entities/categoria.entity';
 import { CategoriaService } from '../services/categoria.service';
+import { Categoria } from '../entities/categoria.entity';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('categorias')
 export class CategoriaController {
-  constructor(private readonly categoriaService: CategoriaService) { }
+  constructor(private readonly categoriaService: CategoriaService) {}
 
   @Get()
   findAll(): Promise<Categoria[]> {

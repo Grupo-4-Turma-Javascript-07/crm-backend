@@ -1,16 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from '../entities/usuario.entity';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsuarioService {
   constructor(
@@ -53,6 +49,7 @@ export class UsuarioService {
 
   async create(usuario: Usuario): Promise<Usuario> {
     await this.verificarEmailDuplicado(usuario.email);
+    usuario.senha = await bcrypt.hash(usuario.senha, 10);
     return await this.usuarioRepository.save(usuario);
   }
 
@@ -84,20 +81,6 @@ export class UsuarioService {
     const usuario = await this.findById(id);
     usuario.ativo = true;
     return await this.usuarioRepository.save(usuario);
-  }
-
-  async login(email: string, senha: string): Promise<Usuario> {
-    if (!/\S+@\S+\.S+/.test(email)) {
-      throw new BadRequestException('Formato de e-mail inválido');
-    }
-
-    const usuario = await this.findByEmail(email);
-
-    if (usuario.senha !== senha) {
-      throw new UnauthorizedException('Senha incorreta');
-    }
-
-    return usuario;
   }
 
   private async verificarEmailDuplicado(

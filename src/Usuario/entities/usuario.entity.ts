@@ -7,9 +7,10 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Produto } from '../../produto/entities/produto.entity';
 
-Entity({ name: 'tb_usuario' });
+@Entity({ name: 'tb_usuario' })
 export class Usuario {
   @PrimaryGeneratedColumn()
   id: number;
@@ -57,6 +58,6 @@ export class Usuario {
   @Column({ default: true })
   ativo: boolean;
 
-  //@OneToMany(() => Produto, (produto) => produto.usuario)
-  //produto: Produto[];
+  @OneToMany(() => Produto, (produto) => produto.usuario)
+  produto: Produto[];
 }

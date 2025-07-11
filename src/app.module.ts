@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { UsuarioModule } from './usuario/usuario.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { Usuario } from './Usuario/entities/usuario.entity';
-import { UsuarioModule } from './Usuario/usuario.module';
-import { Produto } from './Produto/entities/produto.entity';
-import { ProdutoModule } from './Produto/produto.module';
+import { Usuario } from './usuario/entities/usuario.entity';
+import { Produto } from './produto/entities/produto.entity';
+import { ProdutoModule } from './produto/produto.module';
 import { Categoria } from './categoria/entities/categoria.entity';
 import { CategoriaModule } from './categoria/categoria.module';
 
@@ -23,13 +23,10 @@ import { CategoriaModule } from './categoria/categoria.module';
       entities: [Usuario, Produto, Categoria],
       synchronize: true,
     }),
-  ],
-})
-export class AppModule {}
     UsuarioModule,
     ProdutoModule,
     CategoriaModule,
     AuthModule,
   ],
 })
-
+export class AppModule {}

@@ -1,8 +1,8 @@
-import { CategoriaService } from './../../Categoria/services/categoria.service';
+import { CategoriaService } from '../../categoria/services/categoria.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Produto } from '../entities/produto.entity';
-import { DeleteResult, ILike, Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 
 @Injectable()
 export class ProdutoService {
@@ -35,8 +35,6 @@ export class ProdutoService {
 
     return produto;
   }
-
-
 
   async create(produto: Produto): Promise<Produto> {
     await this.CategoriaService.findById(produto.categoria.id);
