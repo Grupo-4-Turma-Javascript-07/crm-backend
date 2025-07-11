@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Produto } from '../../produto/entities/produto.entity';
+import { Produto } from '../../Produto/entities/produto.entity';
 
 @Entity({ name: 'tb_categorias' })
 export class Categoria {

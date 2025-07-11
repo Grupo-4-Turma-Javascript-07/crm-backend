@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { UsuarioModule } from './usuario/usuario.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { Usuario } from './usuario/entities/usuario.entity';
-import { Produto } from './produto/entities/produto.entity';
-import { ProdutoModule } from './produto/produto.module';
-import { Categoria } from './categoria/entities/categoria.entity';
 import { CategoriaModule } from './categoria/categoria.module';
+import { Categoria } from './categoria/entities/categoria.entity';
+import { Produto } from './Produto/entities/produto.entity';
+import { ProdutoModule } from './Produto/produto.module';
+import { Usuario } from './usuario/entities/usuario.entity';
+import { UsuarioModule } from './usuario/usuario.module';
 
 @Module({
   imports: [
