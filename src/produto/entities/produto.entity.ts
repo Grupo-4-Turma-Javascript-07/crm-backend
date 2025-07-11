@@ -26,14 +26,6 @@ export class Produto {
   @Column('tinyint', { width: 1, nullable: false })
   opt: boolean;
 
-  @IsNotEmpty()
-  @Column()
-  categoria_id: number;
-
-  @IsNotEmpty()
-  @Column()
-  usuario_id: number;
-
   @ManyToOne(() => Categoria, (categoria) => categoria.produtos, {
     onDelete: 'CASCADE',
   })
