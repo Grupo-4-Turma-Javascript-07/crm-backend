@@ -1,6 +1,5 @@
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { Produto } from '../entities/produto.entity';
-
 import { ProdutoService } from '../services/produto.service';
 import {
   Body,
@@ -13,6 +12,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -31,6 +31,13 @@ export class ProdutoController {
   @HttpCode(HttpStatus.OK)
   findById(@Param('id', ParseIntPipe) id: number): Promise<Produto> {
     return this.produtoService.findById(id);
+  }
+
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async findByOportunidade(@Query('opt') optParam: string): Promise<Produto[]> {
+    const opt = optParam === 'true';
+    return this.produtoService.findByOportunidade(opt);
   }
 
   @Post()

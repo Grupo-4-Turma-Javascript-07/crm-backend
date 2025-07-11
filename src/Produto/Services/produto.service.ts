@@ -36,6 +36,17 @@ export class ProdutoService {
     return produto;
   }
 
+  async findByOportunidade(opt: boolean): Promise<Produto[]> {
+    return this.produtoRepository.find({
+      where: {
+        opt,
+      },
+      relations: {
+        categoria: true,
+      },
+    });
+  }
+
   async create(produto: Produto): Promise<Produto> {
     await this.CategoriaService.findById(produto.categoria.id);
 
