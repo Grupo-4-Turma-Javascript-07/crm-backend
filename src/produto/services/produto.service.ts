@@ -1,4 +1,9 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Categoria } from '../../categoria/entities/categoria.entity';
@@ -14,7 +19,7 @@ export class ProdutoService {
 
     @InjectRepository(Categoria)
     private readonly categoriaRepository: Repository<Categoria>,
-  ) { }
+  ) {}
 
   async findAll(): Promise<Produto[]> {
     return await this.produtoRepository.find({
@@ -34,8 +39,7 @@ export class ProdutoService {
       },
     });
 
-    if (!produto)
-      throw new NotFoundException('Produto não encontrado!');
+    if (!produto) throw new NotFoundException('Produto não encontrado!');
 
     return produto;
   }
