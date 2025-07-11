@@ -33,9 +33,9 @@ export class ProdutoController {
     return this.produtoService.findById(id);
   }
 
-  @Get()
+  @Get('oportunidade/:opt')
   @HttpCode(HttpStatus.OK)
-  async findByOportunidade(@Query('opt') optParam: string): Promise<Produto[]> {
+  async findByOportunidade(@Param('opt') optParam: string): Promise<Produto[]> {
     const opt = optParam === 'true';
     return this.produtoService.findByOportunidade(opt);
   }
