@@ -23,7 +23,7 @@ export class Produto {
 
   @IsNotEmpty()
   @IsBoolean()
-  @Column('tinyint', { width: 1, nullable: false })
+  @Column({ width: 1, nullable: false, type: 'boolean' })
   opt: boolean;
 
   @ManyToOne(() => Categoria, (categoria) => categoria.produtos, {
