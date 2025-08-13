@@ -17,10 +17,10 @@ import { UsuarioService } from '../service/usuario.service';
 
 @ApiTags('Usuario')
 @Controller('/usuario')
-@ApiBearerAuth()
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -28,6 +28,7 @@ export class UsuarioController {
     return this.usuarioService.findAll();
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
@@ -40,21 +41,21 @@ export class UsuarioController {
   create(@Body() usuario: Usuario): Promise<Usuario> {
     return this.usuarioService.create(usuario);
   }
-
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Put()
   @HttpCode(HttpStatus.OK)
   update(@Body() usuario: Usuario): Promise<Usuario> {
     return this.usuarioService.update(usuario);
   }
-
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Put('/desativar/:id')
   @HttpCode(HttpStatus.OK)
   desativar(@Param('id', ParseIntPipe) id: number): Promise<Usuario> {
     return this.usuarioService.desativar(id);
   }
-
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Put('/reativar/:id')
   @HttpCode(HttpStatus.OK)

@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserFromJwtInterface } from '../interfaces/user-from-jwt.interface';
 import { UserPayload } from '../interfaces/user-payload.interface';
 import { UsuarioService } from '../../usuario/service/usuario.service';
+import { LoginDto } from '../dto/loginDto';
 
 @Injectable()
 export class AuthService {
@@ -25,8 +26,16 @@ export class AuthService {
     return null;
   }
 
-  async login(user: UserFromJwtInterface): Promise<{ access_token: string }> {
-    const payload: UserPayload = { sub: user.id, email: user.email };
+  async login(user: LoginDto): Promise<{ access_token: string }> {
+    const userLogin = await this.validateUser(user.email, user.password);
+
+    if (!userLogin) {
+      throw new BadRequestException('email ou senha inválidos');
+    }
+    const payload: UserPayload = {
+      sub: userLogin?.id,
+      email: userLogin?.email,
+    };
 
     const token: string = await this.jwtService.signAsync(payload);
 
