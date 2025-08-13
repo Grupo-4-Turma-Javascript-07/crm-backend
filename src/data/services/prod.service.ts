@@ -19,7 +19,7 @@ export class ProdService implements TypeOrmOptionsFactory {
       username: this.config.get<string>('DB_USERNAME') ?? 'postgres',
       password: this.config.get<string>('DB_PASSWORD') ?? '',
       database: this.config.get<string>('DB_NAME') ?? 'postgres',
-      schema: 'crm_app',
+      schema: this.config.get<string>('DB_SCHEMA') ?? 'crm_app',
       entities: [Usuario, Produto, Categoria],
       synchronize: true,
 
