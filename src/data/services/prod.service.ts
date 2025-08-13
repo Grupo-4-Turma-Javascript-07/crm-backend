@@ -20,7 +20,7 @@ export class ProdService implements TypeOrmOptionsFactory {
       password: this.config.get<string>('DB_PASSWORD') ?? '',
       database: this.config.get<string>('DB_NAME') ?? 'postgres',
       entities: [Usuario, Produto, Categoria],
-      synchronize: false,
+      synchronize: true,
 
       ssl: isProduction,
       extra: isProduction
