@@ -81,6 +81,6 @@ export class CategoriaService {
 
   async delete(id: number): Promise<void> {
     const categoria = await this.findById(id);
-    await this.categoriaRepository.delete(categoria);
+    await this.categoriaRepository.delete(categoria.id);
   }
 }
