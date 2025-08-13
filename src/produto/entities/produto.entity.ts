@@ -4,7 +4,7 @@ import { Categoria } from '../../categoria/entities/categoria.entity';
 import { Usuario } from '../../usuario/entities/usuario.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity({ name: 'tb_produtos' })
+@Entity({ name: 'tb_produtos', schema: 'crm_app' })
 export class Produto {
   @ApiProperty()
   @PrimaryGeneratedColumn()
