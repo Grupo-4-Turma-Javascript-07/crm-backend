@@ -85,12 +85,16 @@ export class ProdutoService {
     return await this.produtoRepository.save(produto);
   }
 
-  async update(produto: Produto): Promise<Produto> {
-    await this.findById(produto.id);
+  async update(produto: Produto, id: number): Promise<Produto> {
+    const produtoAntigo = await this.findById(id);
 
+    const novoProduto = {
+      ...produtoAntigo,
+      ...produto,
+    };
     await this.CategoriaService.findById(produto.categoria.id);
 
-    return await this.produtoRepository.save(produto);
+    return await this.produtoRepository.save(novoProduto);
   }
 
   async delete(id: number): Promise<DeleteResult> {

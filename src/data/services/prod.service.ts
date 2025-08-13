@@ -14,11 +14,7 @@ export class ProdService implements TypeOrmOptionsFactory {
 
     return {
       type: this.config.get<'postgres' | 'mysql'>('DB_TYPE') ?? 'postgres',
-      host: this.config.get<string>('DB_HOST') ?? 'localhost',
-      port: parseInt(this.config.get('DB_PORT') ?? '5432', 10),
-      username: this.config.get<string>('DB_USERNAME') ?? 'postgres',
-      password: this.config.get<string>('DB_PASSWORD') ?? '',
-      database: this.config.get<string>('DB_NAME') ?? 'postgres',
+      url: this.config.get<string>('DB_URL'),
       entities: [Usuario, Produto, Categoria],
       synchronize: true,
 

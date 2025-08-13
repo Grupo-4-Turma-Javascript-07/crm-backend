@@ -48,10 +48,13 @@ export class ProdutoController {
     return this.produtoService.create(produto);
   }
 
-  @Put()
+  @Put(':id')
   @HttpCode(HttpStatus.OK)
-  update(@Body() produto: Produto): Promise<Produto> {
-    return this.produtoService.update(produto);
+  update(
+    @Body() produto: Produto,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Produto> {
+    return this.produtoService.update(produto, id);
   }
 
   @Delete('/:id')
