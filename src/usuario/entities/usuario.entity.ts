@@ -11,7 +11,7 @@ import {
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Produto } from '../../produto/entities/produto.entity';
 
-@Entity({ name: 'tb_usuario', schema: 'crm_app' })
+@Entity({ name: 'tb_usuario' })
 export class Usuario {
   @PrimaryGeneratedColumn()
   @ApiProperty()
