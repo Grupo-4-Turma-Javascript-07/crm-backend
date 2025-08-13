@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { Usuario } from '../../usuario/entities/usuario.entity';
-import { Produto } from '../../produto/entities/produto.entity';
-import { Categoria } from '../../categoria/entities/categoria.entity';
 
 @Injectable()
 export class ProdService implements TypeOrmOptionsFactory {
@@ -13,11 +10,10 @@ export class ProdService implements TypeOrmOptionsFactory {
     const isProduction = this.config.get('NODE_ENV') === 'production';
 
     return {
-      type: this.config.get<'postgres' | 'mysql'>('DB_TYPE') ?? 'postgres',
+      type: 'postgres',
       url: this.config.get<string>('DB_URL'),
-      entities: [Usuario, Produto, Categoria],
-      synchronize: true,
-
+      logging: false,
+      dropSchema: false,
       ssl: isProduction,
       extra: isProduction
         ? {
@@ -26,6 +22,8 @@ export class ProdService implements TypeOrmOptionsFactory {
             },
           }
         : {},
+      synchronize: true,
+      autoLoadEntities: true,
     };
   }
 }
