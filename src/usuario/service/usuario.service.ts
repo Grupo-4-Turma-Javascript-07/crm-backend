@@ -4,15 +4,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { Usuario } from '../entities/usuario.entity';
-import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsuarioService {
   constructor(
     @InjectRepository(Usuario)
     private usuarioRepository: Repository<Usuario>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Usuario[]> {
     return await this.usuarioRepository.find({
@@ -68,6 +68,7 @@ export class UsuarioService {
       usuario.senha = usuarioExistente.senha;
     }
 
+    usuario.senha = await bcrypt.hash(usuario.senha, 10);
     return await this.usuarioRepository.save(usuario);
   }
 
