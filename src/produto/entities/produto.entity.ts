@@ -1,5 +1,12 @@
 import { IsBoolean, IsNotEmpty, IsNumber } from 'class-validator';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Categoria } from '../../categoria/entities/categoria.entity';
 import { Usuario } from '../../usuario/entities/usuario.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -31,6 +38,12 @@ export class Produto {
   @IsBoolean()
   @Column({ width: 1, nullable: false, type: 'boolean' })
   opt: boolean;
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  updatedAt: Date;
 
   @ApiProperty({ type: () => Categoria })
   @ManyToOne(() => Categoria, (categoria) => categoria.produtos, {

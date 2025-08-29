@@ -14,6 +14,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { Categoria } from '../entities/categoria.entity';
 import { CategoriaService } from '../services/categoria.service';
+import { PaginationDto } from '../../dto/pagination.dto';
 
 @ApiTags('Categorias')
 @UseGuards(JwtAuthGuard)
@@ -23,8 +24,8 @@ export class CategoriaController {
   constructor(private readonly categoriaService: CategoriaService) {}
 
   @Get()
-  findAll(): Promise<Categoria[]> {
-    return this.categoriaService.findAll();
+  findAll(@Query() pagination: PaginationDto): Promise<PaginationDto> {
+    return this.categoriaService.findAll(pagination);
   }
 
   @Get('nome')

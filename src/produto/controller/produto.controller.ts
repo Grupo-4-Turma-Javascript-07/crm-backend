@@ -9,12 +9,14 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { Produto } from '../entities/produto.entity';
 import { ProdutoService } from '../services/produto.service';
+import { PaginationDto } from '../../dto/pagination.dto';
 
 @ApiTags('Produtos')
 @UseGuards(JwtAuthGuard)
@@ -25,8 +27,8 @@ export class ProdutoController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll(): Promise<Produto[]> {
-    return this.produtoService.findAll();
+  findAll(@Query() pagination: PaginationDto): Promise<PaginationDto> {
+    return this.produtoService.findAll(pagination);
   }
 
   @Get('/:id')

@@ -9,6 +9,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { Categoria } from '../../categoria/entities/categoria.entity';
 import { CategoriaService } from '../../categoria/services/categoria.service';
 import { Produto } from '../entities/produto.entity';
+import { PaginationDto } from '../../dto/pagination.dto';
 
 @Injectable()
 export class ProdutoService {
@@ -21,12 +22,28 @@ export class ProdutoService {
     private readonly categoriaRepository: Repository<Categoria>,
   ) {}
 
-  async findAll(): Promise<Produto[]> {
-    return await this.produtoRepository.find({
-      relations: {
-        categoria: true,
-      },
+  async findAll(pagination: PaginationDto) {
+    const page = Math.max(1, Number(pagination.page) || 1);
+    const rawLimit = Number(pagination.limit) || 10;
+    const limit = Math.min(rawLimit, 100);
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await this.produtoRepository.findAndCount({
+      skip,
+      take: limit,
+      order: { createdAt: 'DESC' },
+      relations: { categoria: true },
     });
+
+    const totalPages = Math.max(1, Math.ceil(total / limit));
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
 
   async findById(id: number): Promise<Produto> {

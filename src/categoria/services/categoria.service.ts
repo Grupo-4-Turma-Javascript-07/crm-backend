@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Not, Repository } from 'typeorm';
 import { Categoria } from '../entities/categoria.entity';
+import { PaginationDto } from '../../dto/pagination.dto';
 
 @Injectable()
 export class CategoriaService {
@@ -14,12 +15,26 @@ export class CategoriaService {
     private readonly categoriaRepository: Repository<Categoria>,
   ) {}
 
-  async findAll(): Promise<Categoria[]> {
-    return await this.categoriaRepository.find({
-      relations: {
-        produtos: true,
-      },
+  async findAll(pagination: PaginationDto) {
+    const page = Math.max(1, Number(pagination.page) || 1);
+    const rawLimit = Number(pagination.limit) || 10;
+    const limit = Math.min(rawLimit, 100);
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await this.categoriaRepository.findAndCount({
+      skip,
+      take: limit,
+      order: { createAt: 'DESC' },
     });
+
+    const totalPages = Math.max(1, Math.ceil(total / limit));
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
 
   async findById(id: number): Promise<Categoria> {

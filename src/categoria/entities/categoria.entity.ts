@@ -1,5 +1,12 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Produto } from '../../produto/entities/produto.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -23,4 +30,10 @@ export class Categoria {
 
   @OneToMany(() => Produto, (produto) => produto.categoria)
   produtos: Produto[];
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  createAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  updatedAt: Date;
 }
